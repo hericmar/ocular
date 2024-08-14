@@ -99,6 +99,10 @@
     "placeholder": "Start by filling out the income / expenses tabs! :)"
   },
   "page": {
+    "login": {
+      "title": "",
+      "description": "Login to Ocular"
+    },
     "income": {
       "title": "Income"
     },

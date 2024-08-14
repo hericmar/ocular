@@ -1,26 +1,33 @@
 <template>
-  <Button :class="classes" textual :color="color" :icon="icon" @click="auth" />
-  <LoginDialog :open="showLoginDialog" @close="showLoginDialog = false" />
+  <Button
+    v-tooltip="{ text: tooltip, position: 'right' }"
+    :class="classes"
+    textual
+    :color="color"
+    :icon="icon"
+    @click="auth"
+  />
 </template>
 
 <script lang="ts" setup>
 import { RiCloudLine, RiCloudOffLine, RiRefreshLine } from '@remixicon/vue';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import Button from '@components/base/button/Button.vue';
 import { Color } from '@composables';
 import { useStorage } from '@storage/index';
 import { ClassNames } from '@utils';
-import LoginDialog from './LoginDialog.vue';
 import type { Component } from 'vue';
 
 const props = defineProps<{
   class?: ClassNames;
 }>();
 
+const router = useRouter();
 const { status, logout } = useStorage();
-const showLoginDialog = ref(false);
 
 const classes = computed(() => props.class);
+const tooltip = computed(() => (status.value === 'idle' ? 'Login' : 'Logout'));
 
 const icon = computed((): Component => {
   switch (status.value) {
@@ -50,9 +57,10 @@ const color = computed((): Color => {
 
 const auth = () => {
   if (status.value === 'idle') {
-    showLoginDialog.value = true;
+    router.push({ name: 'login' });
   } else {
     logout();
+    router.push({ name: 'login' });
   }
 };
 </script>

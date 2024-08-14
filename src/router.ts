@@ -19,6 +19,11 @@ export const router = createRouter({
       component: () => import('./app/pages/expenses/Expenses.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('./app/pages/login/Login.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/'
     }
