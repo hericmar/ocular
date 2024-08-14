@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useStorage } from '@storage/index';
 
 export const router = createRouter({
   history: createWebHistory(),

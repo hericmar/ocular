@@ -93,9 +93,6 @@ export const createStorage = () => {
     }
   });
 
-  // Check if user is logged in
-  void login();
-
   return {
     user: readonly(authenticatedUser),
     status,

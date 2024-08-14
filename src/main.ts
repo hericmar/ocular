@@ -11,7 +11,7 @@ import { i18n } from './i18n';
 import { router } from './router';
 import './styles/index.scss';
 
-const storage = createStorage();
+const storage = await createStorage();
 const app = createApp(App);
 
 app.provide(DATA_STORE_KEY, createDataStore(storage));
@@ -20,6 +20,21 @@ app.provide(STORAGE_KEY, storage);
 
 app.directive('tooltip', vTooltip);
 app.use(i18n);
+
+// Check if user is logged in
+await storage.login();
+
+const { user } = storage;
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && !user.value) {
+    next({ name: 'login' });
+  } else if (to.name === 'login' && user.value) {
+    next({ name: 'dashboard' });
+  } else {
+    next();
+  }
+});
 app.use(router);
 
 app.mount('#app');
