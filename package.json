@@ -13,6 +13,7 @@
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
+    "format": "prettier --write '{scripts,src}/**/*.{js,ts,vue}'",
     "lint": "eslint '{scripts,src}/**/*.{js,ts,vue}' --no-error-on-unmatched-pattern",
     "lint:fix": "pnpm run lint --fix",
     "test:ci": "pnpm run lint:fix && pnpm run build",
