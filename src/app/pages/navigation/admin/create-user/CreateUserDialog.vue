@@ -2,7 +2,7 @@
   <Dialog :title="t('navigation.admin.createUser')" :open="open" @close="emit('close')">
     <Form :submit-label="t('navigation.admin.createUser')" @submit="submit">
       <TextField
-        v-model="newUser.name"
+        v-model="newUser.username"
         :min-length="3"
         :max-length="32"
         required
@@ -17,7 +17,7 @@
         type="password"
         show-password-strength
       />
-      <CheckBoxField v-model="newUser.admin" :label="t('navigation.admin.admin')" />
+      <CheckBoxField v-model="newUser.isAdministrator" :label="t('navigation.admin.admin')" />
 
       <Alert v-if="state === 'errored'" :text="t('navigation.admin.error')" type="error" />
       <Alert v-if="state === 'conflict'" :text="t('navigation.admin.conflict')" type="error" />
@@ -49,9 +49,9 @@ const { createUser } = useStorage();
 
 const state = ref<'idle' | 'loading' | 'conflict' | 'errored'>('idle');
 const newUser = reactive<NewGenesisUser>({
-  name: '',
+  username: '',
   password: '',
-  admin: false
+  isAdministrator: false
 });
 
 const submit = () => {
@@ -60,7 +60,7 @@ const submit = () => {
 
     createUser(newUser)
       .then(() => {
-        newUser.name = '';
+        newUser.username = '';
         newUser.password = '';
         state.value = 'idle';
         emit('close');

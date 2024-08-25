@@ -21,7 +21,7 @@
       <div v-else style="flex-grow: 1" />
 
       <ToolsButton :class="$style.btn" />
-      <AdminButton v-if="user?.admin" :class="$style.btn" />
+      <AdminButton v-if="user?.isAdministrator" :class="$style.btn" />
       <ChangeYearButton :class="$style.btn" />
 
       <template v-if="media !== 'mobile'">

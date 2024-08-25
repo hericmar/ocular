@@ -19,14 +19,22 @@ export const createStorage = () => {
     onSessionExpired: logout
   });
 
-  const login = async (user?: string, password?: string): Promise<boolean> =>
-    store
-      .login(user && password ? { user, password } : undefined)
-      .then((user) => {
-        authenticatedUser.value = user;
+  const getMe = async () => {
+    await store
+      .getMe()
+      .then((user) => (authenticatedUser.value = user))
+      .catch(() => (authenticatedUser.value = undefined));
+  };
+
+  const login = async (user?: string, password?: string): Promise<boolean> => {
+    return store
+      .login(user && password ? { username: user, password } : undefined)
+      .then(async () => {
+        await getMe();
         return true;
       })
       .catch(() => false);
+  };
 
   const sync = <T extends MigratableState, P extends MigratableState = T>(config: StorageSync<T, P>) => {
     const initialSyncRequired = ref(true);
@@ -101,6 +109,7 @@ export const createStorage = () => {
     createUser: store.createUser,
     updateUser: store.updateUser,
     updatePassword: store.updatePassword,
+    getMe,
     login,
     logout,
     sync

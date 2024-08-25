@@ -11,7 +11,7 @@
 
     <template #options>
       <CreateUserButton />
-      <ManageUsersButton v-if="user?.admin" />
+      <ManageUsersButton v-if="user?.isAdministrator" />
     </template>
   </ContextMenu>
 </template>

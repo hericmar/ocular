@@ -1,16 +1,17 @@
 export interface GenesisUser {
-  name: string;
-  admin: boolean;
+  id: number;
+  username: string;
+  isAdministrator: boolean;
 }
 
 export interface NewGenesisUser {
-  name: string;
+  username: string;
   password: string;
-  admin: boolean;
+  isAdministrator: boolean;
 }
 
 export interface GenesisLoginRequest {
-  user: string;
+  username: string;
   password: string;
 }
 
@@ -35,9 +36,14 @@ export const createGenesisStore = (opt: GenesisStoreOptions) => {
     }
   };
 
-  const login = async (request?: GenesisLoginRequest): Promise<GenesisUser> =>
-    assertOk(
-      await fetch(`${opt.baseUrl}/login`, {
+  const getMe = async (): Promise<GenesisUser> => {
+    const res = await fetch(`${opt.baseUrl}/api/v1/users/me`);
+    return assertOk(res);
+  };
+
+  const login = async (request?: GenesisLoginRequest): Promise<GenesisUser> => {
+    return assertOk(
+      await fetch(`${opt.baseUrl}/api/v1/auth/session`, {
         method: 'POST',
         ...(request && {
           headers: { 'Content-Type': 'application/json' },
@@ -46,13 +52,14 @@ export const createGenesisStore = (opt: GenesisStoreOptions) => {
       }),
       true
     );
+  };
 
-  const logout = async () => assertOk(await fetch(`${opt.baseUrl}/logout`, { method: 'POST' }));
+  const logout = async () => assertOk(await fetch(`${opt.baseUrl}/api/v1/auth/logout`, { method: 'POST' }));
 
   const updatePassword = async (request: GenesisUpdatePasswordRequest): Promise<void> =>
     assertOk(
-      await fetch(`${opt.baseUrl}/account/update`, {
-        method: 'POST',
+      await fetch(`${opt.baseUrl}/api/v1/users/me/password`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request)
       }),
@@ -77,30 +84,31 @@ export const createGenesisStore = (opt: GenesisStoreOptions) => {
     assertOk(await fetch(`${opt.baseUrl}/data/${key}`, { method: 'DELETE' }));
 
   const getAllUsers = async (): Promise<GenesisUser[]> =>
-    assertOk(await fetch(`${opt.baseUrl}/user`, { method: 'GET' }));
+    assertOk(await fetch(`${opt.baseUrl}/api/v1/users`, { method: 'GET' }));
 
   const createUser = async (newUser: NewGenesisUser): Promise<void> =>
     assertOk(
-      await fetch(`${opt.baseUrl}/user`, {
+      await fetch(`${opt.baseUrl}/api/v1/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
       })
     );
 
-  const updateUser = async (username: string, updatedUser: GenesisUser): Promise<void> =>
+  const updateUser = async (id: number, updatedUser: GenesisUser): Promise<void> =>
     assertOk(
-      await fetch(`${opt.baseUrl}/user/${username}`, {
-        method: 'POST',
+      await fetch(`${opt.baseUrl}/api/v1/users/${id}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedUser)
       })
     );
 
-  const deleteUser = async (username: string): Promise<void> =>
-    assertOk(await fetch(`${opt.baseUrl}/user/${username}`, { method: 'DELETE' }));
+  const deleteUser = async (id: number): Promise<void> =>
+    assertOk(await fetch(`${opt.baseUrl}/api/v1/users/${id}`, { method: 'DELETE' }));
 
   return {
+    getMe,
     login,
     logout,
     updatePassword,

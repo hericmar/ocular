@@ -1,13 +1,13 @@
 <template>
   <Dialog :title="t('navigation.admin.manageUsers')" :open="open" @close="emit('close')">
     <ul v-if="users.length" :class="$style.list">
-      <li v-for="usr of users" :key="usr.name" :class="$style.item">
-        <span :class="$style.name">{{ usr.name }}</span>
+      <li v-for="usr of users" :key="usr.username" :class="$style.item">
+        <span :class="$style.name">{{ usr.username }}</span>
         <Button
-          :color="usr.admin ? 'success' : 'dimmed'"
+          :color="usr.isAdministrator ? 'success' : 'dimmed'"
           textual
           :icon="RiShieldUserLine"
-          @click="toggleAdmin(usr, !usr.admin)"
+          @click="toggleAdmin(usr, !usr.isAdministrator)"
         />
         <Button color="danger" textual :icon="RiCloseCircleLine" @click="removeUser(usr)" />
       </li>
@@ -39,20 +39,20 @@ const { user, getAllUsers, updateUser, deleteUser } = useStorage();
 const users = ref<GenesisUser[]>([]);
 
 const toggleAdmin = async (user: GenesisUser, admin: boolean) => {
-  await updateUser(user.name, { ...user, admin });
+  await updateUser(user.id, { ...user, isAdministrator: admin });
   await fetchUsers();
 };
 
 const removeUser = async (user: GenesisUser) => {
-  if (window.confirm(t('navigation.admin.deleteUserConfirmation', { name: user.name }))) {
-    await deleteUser(user.name);
+  if (window.confirm(t('navigation.admin.deleteUserConfirmation', { name: user.username }))) {
+    await deleteUser(user.id);
     await fetchUsers();
   }
 };
 
 const fetchUsers = async () => (users.value = await getAllUsers());
 
-watch([user, toRef(props, 'open')], ([user]) => user?.admin && void fetchUsers(), { immediate: true });
+watch([user, toRef(props, 'open')], ([user]) => user?.isAdministrator && void fetchUsers(), { immediate: true });
 </script>
 
 <style lang="scss" module>

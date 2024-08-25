@@ -33,7 +33,7 @@ const signIn = async () => {
       username.value = '';
       password.value = '';
       state.value = 'idle';
-      router.push({ name: 'dashboard' });
+      await router.push({ name: 'dashboard' });
     } else {
       state.value = 'errored';
     }

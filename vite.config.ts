@@ -11,8 +11,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
-        rewrite: (path) => path.slice(4) // cut off `/api`
+        target: 'http://localhost:8080'
       }
     }
   },
