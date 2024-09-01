@@ -1,10 +1,14 @@
-import { MigratableState } from 'yuppee';
-
 export type StorageAuthenticationState = 'idle' | 'loading' | 'authenticated' | 'syncing';
 
-export interface StorageSync<T extends MigratableState, P extends MigratableState = T> {
+export interface Entity {
+  id: string;
+}
+
+export interface StorageSync<T extends Entity> {
   name: string;
   state(): T;
+  // not needed
   clear(): void;
-  push(data: P): void;
+  // not needed
+  push(data: T): void;
 }

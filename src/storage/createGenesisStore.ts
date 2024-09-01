@@ -66,22 +66,23 @@ export const createGenesisStore = (opt: GenesisStoreOptions) => {
       true
     );
 
-  const getData = async (): Promise<object> => assertOk(await fetch(`${opt.baseUrl}/data`));
+  const getData = async (collection: string): Promise<object> =>
+    assertOk(await fetch(`${opt.baseUrl}/api/v1/${collection}`));
 
-  const getDataByKey = async (key: string): Promise<unknown | undefined> =>
-    assertOk(await fetch(`${opt.baseUrl}/data/${key}`));
+  const getDataByKey = async (collection: string, key: string): Promise<unknown | undefined> =>
+    assertOk(await fetch(`${opt.baseUrl}/api/v1/${collection}/${key}`));
 
-  const setDataByKey = async (key: string, data: unknown): Promise<void> =>
+  const setDataByKey = async (collection: string, key: string, data: unknown): Promise<void> =>
     assertOk(
-      await fetch(`${opt.baseUrl}/data/${key}`, {
-        method: 'POST',
+      await fetch(`${opt.baseUrl}/api/v1/${collection}/${key}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
     );
 
-  const deleteDataByKey = async (key: string): Promise<void> =>
-    assertOk(await fetch(`${opt.baseUrl}/data/${key}`, { method: 'DELETE' }));
+  const deleteDataByKey = async (collection: string, key: string): Promise<void> =>
+    assertOk(await fetch(`${opt.baseUrl}/api/v1/${key}`, { method: 'DELETE' }));
 
   const getAllUsers = async (): Promise<GenesisUser[]> =>
     assertOk(await fetch(`${opt.baseUrl}/api/v1/users`, { method: 'GET' }));

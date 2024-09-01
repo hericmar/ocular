@@ -36,7 +36,7 @@ const { n } = useI18n();
 const value = computed(() =>
   focused.value || !modelValue.value
     ? modelValue.value || ''
-    : n(modelValue.value, { key: 'currency', currency: state.currency })
+    : n(modelValue.value /* { key: 'currency', currency: state.currency } */)
 );
 
 const updateModelValue = (raw?: string) => {

@@ -115,7 +115,7 @@ export const createDataStore = (storage?: Storage): Store => {
     state: () => state,
     clear: () => Object.assign(state, migrateApplicationState()),
     push: (data) => {
-      Object.assign(state, migrateApplicationState(data));
+      Object.assign(state, data);
 
       activeYear.value = state.years.some((v) => v.year === time.year.value)
         ? time.year.value

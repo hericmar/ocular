@@ -1,8 +1,7 @@
 import { computed, nextTick, readonly, ref, watch } from 'vue';
-import { MigratableState } from 'yuppee';
 import { debounce } from '@utils';
 import { createGenesisStore, GenesisUser } from './createGenesisStore';
-import { StorageAuthenticationState, StorageSync } from './types';
+import { Entity, StorageAuthenticationState, StorageSync } from './types';
 
 export type Storage = ReturnType<typeof createStorage>;
 
@@ -36,13 +35,14 @@ export const createStorage = () => {
       .catch(() => false);
   };
 
-  const sync = <T extends MigratableState, P extends MigratableState = T>(config: StorageSync<T, P>) => {
+  const sync = <T extends Entity>(config: StorageSync<T>) => {
     const initialSyncRequired = ref(true);
     const syncing = ref(false);
 
     const change = debounce(async () => {
+      const state = config.state();
       await store
-        .setDataByKey(config.name, config.state())
+        .setDataByKey(config.name, state.id, state)
         .then(() => (syncing.value = false))
         .catch(() => false);
     }, 1000);
@@ -52,8 +52,8 @@ export const createStorage = () => {
       async ([user, sync]) => {
         if (user && sync) {
           await store
-            .getDataByKey(config.name)
-            .then((data) => config.push(data as P))
+            .getData(config.name)
+            .then((data) => config.push(data as T))
             .catch(() => false);
 
           await nextTick(() => (initialSyncRequired.value = false));

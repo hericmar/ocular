@@ -1,4 +1,3 @@
-import { MigratableState } from 'yuppee';
 import { AvailableLocale } from '@i18n/index';
 
 export type BudgetValues = number[];
@@ -12,6 +11,7 @@ export const availableCurrencies = [
   'CAD',
   'CHF',
   'CNY',
+  'CZK',
   'SEK',
   'NZD',
   'MXN',
@@ -35,6 +35,7 @@ export type AvailableCurrency =
   | 'CAD'
   | 'CHF'
   | 'CNY'
+  | 'CZK'
   | 'SEK'
   | 'NZD'
   | 'MXN'
@@ -66,21 +67,9 @@ export interface BudgetYear {
   income: BudgetGroup[];
 }
 
-export interface DataStateV1 extends MigratableState<1> {
-  expenses: BudgetGroup[];
-  income: BudgetGroup[];
-}
-
-export interface DataStateV2 extends MigratableState<2> {
-  years: BudgetYear[];
-}
-
-export interface DataStateV3 extends MigratableState<3> {
+export type DataState = {
+  // TODO: Make this paginated.
   years: BudgetYear[];
   locale: AvailableLocale;
   currency: AvailableCurrency;
-}
-
-// Latest structure
-export type DataStates = DataStateV1 | DataStateV2 | DataStateV3;
-export type DataState = DataStateV3;
+};
