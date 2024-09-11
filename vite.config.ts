@@ -7,6 +7,11 @@ import manifest from './assets/manifest.json';
 
 export default defineConfig({
   envPrefix: ['OCULAR'],
+  esbuild: {
+    supported: {
+      'top-level-await': true
+    }
+  },
   server: {
     port: 3000,
     proxy: {
