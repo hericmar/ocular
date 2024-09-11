@@ -99,6 +99,10 @@
     "placeholder": "Beginnen Sie damit, die Registerkarten für Einnahmen/Ausgaben auszufüllen! :)"
   },
   "page": {
+    "login": {
+      "title": "",
+      "description": "Anmeldung bei Ocular"
+    },
     "income": {
       "title": "Einnahmen"
     },

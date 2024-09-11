@@ -99,6 +99,10 @@
     "totals" : "Toplamlar"
   },
   "page" : {
+    "login": {
+      "title": "",
+      "description": "Ocular'a gi̇ri̇ş yapin"
+    },
     "dashboard" : {
       "allTime" : "Tüm zamanlara genel bakış",
       "allTimeExpenses" : "Tüm Zamanların Giderleri",

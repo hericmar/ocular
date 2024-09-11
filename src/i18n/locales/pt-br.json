@@ -99,6 +99,10 @@
     "placeholder": "Comece preenchendo as abas de Receita / Despesas! :)"
   },
   "page": {
+    "login": {
+      "title": "",
+      "description": "Aceder ao Ocular"
+    },
     "income": {
       "title": "Receita"
     },
