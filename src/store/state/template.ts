@@ -1,8 +1,8 @@
-import { DataStateV1 } from './types';
+import { BudgetYear, DataState } from './types';
 import { generateBudgetGroup } from './utils';
 
-export const generateTemplate = (): DataStateV1 => ({
-  version: 1,
+const generateYear = (year: number): BudgetYear => ({
+  year,
   expenses: [
     generateBudgetGroup('Children', ['Activities', 'Medical', 'Childcare', 'Clothing', 'School', 'Toys', 'Other']),
     generateBudgetGroup('Debt', ['Credit cards', 'Student loans', 'Other loans', 'Taxes', 'Other']),
@@ -70,4 +70,11 @@ export const generateTemplate = (): DataStateV1 => ({
     generateBudgetGroup('Wages', ['Pay slip', 'Tips', 'Bonus', 'Commission', 'Other']),
     generateBudgetGroup('Other', ['Transfer from savings', 'Interest income', 'Dividends', 'Gifts', 'Refunds', 'Other'])
   ]
+});
+
+export const generateTemplate = (): DataState => ({
+  id: crypto.randomUUID(),
+  locale: 'en',
+  currency: 'GBP',
+  years: [generateYear(new Date().getFullYear())]
 });

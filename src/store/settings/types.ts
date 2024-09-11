@@ -11,6 +11,7 @@ export interface SettingsStateV1 extends MigratableState<1> {
 }
 
 export interface SettingsStateV2 extends MigratableState<2> {
+  id: string;
   appearance: {
     mode: Mode;
     theme: Theme;

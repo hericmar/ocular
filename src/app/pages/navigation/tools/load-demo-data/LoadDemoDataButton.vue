@@ -8,7 +8,7 @@ import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ContextMenuButton from '@components/base/context-menu/ContextMenuButton.vue';
 import { useDataStore } from '@store/state';
-import { DataStateV3 } from '@store/state/types';
+import { DataState } from '@store/state/types';
 
 const { deserialize } = useDataStore();
 const { t } = useI18n();
@@ -20,7 +20,8 @@ const loadDemoData = async () => {
   loading.value = true;
 
   const { default: data } = await import('./DemoData.json');
-  await deserialize(data as DataStateV3);
+  data.id = crypto.randomUUID();
+  await deserialize(data as DataState);
 
   loading.value = false;
 };

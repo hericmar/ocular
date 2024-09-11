@@ -1,6 +1,6 @@
 /* eslint-disable-next-line import/no-unresolved */
 import { registerSW } from 'virtual:pwa-register';
-import { computed, createApp } from 'vue';
+import { createApp } from 'vue';
 import { vTooltip } from '@directives';
 import { createStorage, STORAGE_KEY } from '@storage/index';
 import { createSettingsStore, SETTINGS_STORE_KEY } from '@store/settings';

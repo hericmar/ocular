@@ -2,9 +2,9 @@ import { DeepReadonly, inject, reactive, readonly, ShallowRef, shallowRef, watch
 import { useStateHistory, useTime } from '@composables';
 import { AvailableLocale, i18n } from '@i18n/index';
 import { Storage } from '@storage/index';
+import { generateTemplate } from '@store/state/template';
 import { moveInArrays, readFile, remove, uuid } from '@utils';
-import { migrateApplicationState } from './migrator';
-import { AvailableCurrency, Budget, BudgetGroup, BudgetYear, DataState, DataStates, DataStateV1 } from './types';
+import { AvailableCurrency, Budget, BudgetGroup, BudgetYear, DataState } from './types';
 import { generateBudgetYear } from './utils';
 
 export const DATA_STORE_KEY = Symbol('DataStore');
@@ -69,7 +69,7 @@ type StoreView = Omit<BudgetYear, 'year'> & {
 export const createDataStore = (storage?: Storage): Store => {
   const activeYear = shallowRef(new Date().getFullYear());
   const clipboard = shallowRef<StoredClipboardData | undefined>();
-  const state = reactive<DataState>(migrateApplicationState());
+  const state = reactive<DataState>(generateTemplate());
   const time = useTime();
 
   const history = useStateHistory(
@@ -110,10 +110,10 @@ export const createDataStore = (storage?: Storage): Store => {
     (locale) => (i18n.global.locale.value = locale)
   );
 
-  storage?.sync<DataState, DataState | DataStateV1>({
+  storage?.sync<DataState>({
     name: 'data',
     state: () => state,
-    clear: () => Object.assign(state, migrateApplicationState()),
+    clear: () => Object.assign(state, generateTemplate()),
     push: (data) => {
       Object.assign(state, data);
 
@@ -172,11 +172,11 @@ export const createDataStore = (storage?: Storage): Store => {
       if (data instanceof File) {
         await readFile(data)
           .then(JSON.parse)
-          .then((content: DataStates) => {
-            Object.assign(state, migrateApplicationState(content));
+          .then((content: DataState) => {
+            Object.assign(state, content);
           });
       } else {
-        Object.assign(state, migrateApplicationState(data));
+        Object.assign(state, data);
       }
     },
 

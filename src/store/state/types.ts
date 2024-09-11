@@ -68,6 +68,7 @@ export interface BudgetYear {
 }
 
 export type DataState = {
+  id: string;
   // TODO: Make this paginated.
   years: BudgetYear[];
   locale: AvailableLocale;

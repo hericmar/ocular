@@ -21,6 +21,7 @@ export const migrateSettingsState = createMigrator<SettingsState, Versions>({
       to: 2,
       migrate: (from) => ({
         ...from,
+        id: crypto.randomUUID(),
         version: 2,
         appearance: {
           ...from.appearance,
