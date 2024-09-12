@@ -14,7 +14,7 @@ export const createStorage = () => {
   };
 
   const store = createGenesisStore({
-    baseUrl: import.meta.env.OCULAR_GENESIS_HOST,
+    baseUrl: import.meta.env.OCULAR_GENESIS_HOST || '',
     onSessionExpired: logout
   });
 
